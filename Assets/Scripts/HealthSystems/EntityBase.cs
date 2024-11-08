@@ -29,9 +29,10 @@ public abstract class EntityBase : MonoBehaviour, IHealthComponent, IDamagable
     public void SetHealth(int value)
     {
         health = Mathf.Clamp(value, 0, maxHealth);
-        isDead = health <= 0;
 
-        // Update HUD
+        isDead = health <= 0;
+        if (isDead)
+            Die();
     }
 
     public void AddHealth(int value)
@@ -53,5 +54,7 @@ public abstract class EntityBase : MonoBehaviour, IHealthComponent, IDamagable
             // Spawn particle effects
         }
     }
+
+    public abstract void Die();
     #endregion
 }

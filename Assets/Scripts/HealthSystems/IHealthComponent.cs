@@ -10,5 +10,7 @@ public interface IHealthComponent
     public abstract void AddHealth(int value);
 
     public abstract void RemoveHealth(int value);
+
+    public abstract void Die();
     #endregion
 }
