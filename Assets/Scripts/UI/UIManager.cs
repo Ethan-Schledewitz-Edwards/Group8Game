@@ -1,15 +1,24 @@
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] GameObject startGame;
+    [SerializeField] GameObject config;
+    [SerializeField] GameObject quitGame;
+    
+    public void LoadScene(string sceneName)
     {
-        
+        SceneManager.LoadScene(sceneName);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+    public void OpenConfig()
     {
         
     }
