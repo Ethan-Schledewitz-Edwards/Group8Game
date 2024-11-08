@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -22,6 +23,9 @@ public class GameManager : MonoBehaviour
     private int waveNumber;
     private int enemiesPerWave;
     private EnemyWeight[] availableEnemies;
+
+    [Header("Events")]
+    public Action OnWaveFinish;
 
     #region Initialization Methods
 
@@ -64,7 +68,7 @@ public class GameManager : MonoBehaviour
             GameObject enemyPrefab = GetWeightedEnemy();
 
             // Spawn the selected enemy at a random spawn point
-            int spawnIndex = Random.Range(0, spawnPoints.Length);
+            int spawnIndex = UnityEngine.Random.Range(0, spawnPoints.Length);
             Instantiate(enemyPrefab, spawnPoints[spawnIndex].position, Quaternion.identity);
         }
 
@@ -74,6 +78,8 @@ public class GameManager : MonoBehaviour
     private void EndWave()
     {
         Debug.Log($"Wave Complete: {waveNumber}");
+
+        OnWaveFinish.Invoke();
 
         waveNumber++;
         enemiesPerWave += 2;
@@ -120,7 +126,7 @@ public class GameManager : MonoBehaviour
 
     public Transform GetRandomSpawn()
     {
-        int spawnIndex = Random.Range(0, spawnPoints.Length);
+        int spawnIndex = UnityEngine.Random.Range(0, spawnPoints.Length);
         return spawnPoints[spawnIndex];
     }
 
@@ -133,7 +139,7 @@ public class GameManager : MonoBehaviour
         int totalWeight = availableEnemies.Sum(e => e.Weight);
 
         // Generate a random number within the range of total weights
-        int randomWeight = Random.Range(0, totalWeight);
+        int randomWeight = UnityEngine.Random.Range(0, totalWeight);
         foreach (var enemy in availableEnemies)
         {
             if (randomWeight < enemy.Weight)

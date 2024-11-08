@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5683876520170429105}
   - component: {fileID: 6590019172352653525}
   - component: {fileID: 5786553966171145222}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  isDamagable: 0
+  isDamagable: 1
 --- !u!33 &5683876520170429105
 MeshFilter:
   m_ObjectHideFlags: 0

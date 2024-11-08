@@ -13961,6 +13961,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   isDamagable: 0
+  DropPoint: {fileID: 0}
 --- !u!114 &7764163797496755298
 MonoBehaviour:
   m_ObjectHideFlags: 0
