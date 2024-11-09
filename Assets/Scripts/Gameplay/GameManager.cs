@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -20,8 +21,17 @@ public class GameManager : MonoBehaviour
 
     [Header("System")]
     private int waveNumber;
-    private int enemiesPerWave;
+
+    private int waveSize; // The total amount of enemies this wave
+    private int waveEnemyCap; // The amount of enemies allowed on screen
+    private int enemyPool;// Enemies remaining
+
+    private int kills;
+
     private EnemyWeight[] availableEnemies;
+
+    [Header("Events")]
+    public Action OnWaveFinish;
 
     #region Initialization Methods
 
@@ -46,7 +56,10 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         waveNumber = 1;
-        enemiesPerWave = 5;
+
+        waveSize = 5;
+        waveEnemyCap = 3;
+        enemyPool = waveSize;
 
         FilterEnemies();
 
@@ -58,14 +71,10 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Start Wave");
 
-        for (int i = 0; i < enemiesPerWave; i++)
+        for (int i = 0; i < waveEnemyCap; i++)
         {
             // Get an enemy prefab based on weighted probability
-            GameObject enemyPrefab = GetWeightedEnemy();
-
-            // Spawn the selected enemy at a random spawn point
-            int spawnIndex = Random.Range(0, spawnPoints.Length);
-            Instantiate(enemyPrefab, spawnPoints[spawnIndex].position, Quaternion.identity);
+            SpawnEnemy();
         }
 
         audioSource.PlayOneShot(roundStart);
@@ -75,8 +84,13 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"Wave Complete: {waveNumber}");
 
+        OnWaveFinish.Invoke();
+
         waveNumber++;
-        enemiesPerWave += 2;
+
+        waveSize += 1;
+        waveEnemyCap += 1;
+        enemyPool = waveSize;
 
         // Filter out enemies not available in the current wave
         availableEnemies = enemies.Where(e => e.FloorWave <= waveNumber).ToArray();
@@ -99,13 +113,63 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// THis method should be called when either the player dies (false), or when the player wins (true).
+    /// This method should be called when either the player dies (false), or when the player wins (true).
     /// </summary>
     /// <param name="isSucsessful"></param>
     public void EndGame(bool isSucsessful)
     {
 
     }
+    #endregion
+
+    #region Enemy Methods
+
+    public void SpawnEnemy()
+    {
+        // Spawn the selected enemy at a random spawn point
+        int spawnIndex = UnityEngine.Random.Range(0, spawnPoints.Length);
+        EnemyComponent selectedEnemy = Instantiate(GetWeightedEnemy(), spawnPoints[spawnIndex].position, Quaternion.identity);
+        selectedEnemy.OnDeath += KillEnemy;
+        enemyPool--;
+    }
+
+    private EnemyComponent GetWeightedEnemy()
+    {
+        // Calculate the total weight of the enemy pool
+        int totalWeight = availableEnemies.Sum(e => e.Weight);
+
+        // Generate a random number within the range of total weights
+        int randomWeight = UnityEngine.Random.Range(0, totalWeight);
+        foreach (var enemy in availableEnemies)
+        {
+            if (randomWeight < enemy.Weight)
+            {
+                return enemy.Prefab;
+            }
+            randomWeight -= enemy.Weight;
+        }
+
+        enemyPool--;
+
+        // Fallback
+        return availableEnemies[0].Prefab;
+    }
+
+    private void KillEnemy(EnemyComponent enemy)
+    {
+        Debug.Log("Enemy Died");
+
+        enemy.OnDeath -= KillEnemy;
+
+        // Check if an enemy can take the victems place
+        if (enemyPool > 0)
+            SpawnEnemy();
+
+        kills++;
+        if (kills >= waveSize)
+            EndWave();
+    }
+
     #endregion
 
     #region Utility Methods
@@ -120,40 +184,16 @@ public class GameManager : MonoBehaviour
 
     public Transform GetRandomSpawn()
     {
-        int spawnIndex = Random.Range(0, spawnPoints.Length);
+        int spawnIndex = UnityEngine.Random.Range(0, spawnPoints.Length);
         return spawnPoints[spawnIndex];
     }
-
-    /// <summary>
-    /// Returns an enemy based on the weighted probability of it spawning
-    /// </summary>
-    public GameObject GetWeightedEnemy()
-    {
-        // Calculate the total weight of the enemy pool
-        int totalWeight = availableEnemies.Sum(e => e.Weight);
-
-        // Generate a random number within the range of total weights
-        int randomWeight = Random.Range(0, totalWeight);
-        foreach (var enemy in availableEnemies)
-        {
-            if (randomWeight < enemy.Weight)
-            {
-                return enemy.Prefab;
-            }
-            randomWeight -= enemy.Weight;
-        }
-
-        // Fallback
-        return availableEnemies[0].Prefab;
-    }
-
     #endregion
 }
 
-[System.Serializable]
+[Serializable]
 public class EnemyWeight
 {
     [field: SerializeField] public int FloorWave; // The lowest possible wave for this enemy type to appear
     [field: SerializeField] public int Weight { get; private set; }
-    [field: SerializeField] public GameObject Prefab { get; private set; }
+    [field: SerializeField] public EnemyComponent Prefab { get; private set; }
 }

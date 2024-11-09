@@ -15,13 +15,24 @@ public abstract class EntityBase : MonoBehaviour, IHealthComponent, IDamagable
     public bool IsDamagable => isDamagable;
     [SerializeField] private bool isDamagable;
 
+    #region Initialization Methods
+
+    private void Awake()
+    {
+        SetHealth(maxHealth);
+    }
+
+    #endregion
+
     #region Health Methods
 
     public void SetHealth(int value)
     {
         health = Mathf.Clamp(value, 0, maxHealth);
 
-        // Update HUD
+        isDead = health <= 0;
+        if (isDead)
+            Die();
     }
 
     public void AddHealth(int value)
@@ -36,9 +47,14 @@ public abstract class EntityBase : MonoBehaviour, IHealthComponent, IDamagable
 
     public void TakeDamage(int amount)
     {
-        RemoveHealth(amount);
+        if (IsDamagable)
+        {
+            RemoveHealth(amount);
 
-        // Spawn particle effects
+            // Spawn particle effects
+        }
     }
+
+    public abstract void Die();
     #endregion
 }
