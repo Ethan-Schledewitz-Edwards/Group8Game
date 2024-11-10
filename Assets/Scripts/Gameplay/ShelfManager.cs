@@ -7,11 +7,12 @@ public class ShelfManager : MonoBehaviour
     [SerializeField] Transform[] transforms = new Transform[8];
     List<int> emptySlots = new List<int>();
 
-    //Make it so that it doesn't check full slots
+    // Restocks an item onto a random shelf slot
     public void Restock(GameObject newItem)
     {
         int check;
 
+        // Checks which slots on the shelf are empty
         for (int i = 0; i < items.Length; i++)
         {
             if (items[i] == null)
@@ -20,6 +21,7 @@ public class ShelfManager : MonoBehaviour
             }
         }
 
+        // If there is at least one empty shelf slot, pick one at random and instantiate an item there
         if (emptySlots.Count > 0)
         {
             check = Random.Range(0, emptySlots.Count);
