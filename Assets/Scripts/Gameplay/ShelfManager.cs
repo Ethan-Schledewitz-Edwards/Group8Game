@@ -5,6 +5,7 @@ public class ShelfManager : MonoBehaviour
 {
     [SerializeField] GameObject[] items = new GameObject[8];
     [SerializeField] Transform[] transforms = new Transform[8];
+    List<int> emptySlots = new List<int>();
 
     //Make it so that it doesn't check full slots
     public void Restock(GameObject newItem)
@@ -13,19 +14,28 @@ public class ShelfManager : MonoBehaviour
 
         for (int i = 0; i < items.Length; i++)
         {
-            check = Random.Range(0, items.Length);
-
-            if (items[check] == null)
+            if (items[i] == null)
             {
-                items[check] = newItem;
-                Instantiate(newItem, transforms[check].position, Quaternion.identity);
+                emptySlots.Add(i);
             }
         }
+
+        if (emptySlots.Count > 0)
+        {
+            check = Random.Range(0, emptySlots.Count);
+            items[emptySlots[check]] = Instantiate(newItem, transforms[emptySlots[check]].position, Quaternion.identity);
+            emptySlots.Clear();
+        }
+    }
+
+    public GameObject GetItem(int num)
+    {
+        return items[num];
     }
 
     public void RemoveItem(int num)
     {
-        Destroy(items[num].gameObject);
+        Destroy(items[num]);
 
         items[num] = null;
     }
