@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1662323214416528513}
   - component: {fileID: 6418870386985404442}
   m_Layer: 7
-  m_Name: HangingLight
+  m_Name: hangingLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
