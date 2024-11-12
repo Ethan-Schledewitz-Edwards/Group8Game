@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(Rigidbody), typeof(Collider))]
-public class MeleeWeapon : MonoBehaviour, IWeapon
+public class MeleeWeapon : XRGrabInteractable, IWeapon
 {
     [Header("Properties")]
     public int Damage => damage;
@@ -13,17 +14,73 @@ public class MeleeWeapon : MonoBehaviour, IWeapon
     public int MaxDurability => maxDurability;
     [SerializeField] private int maxDurability;
 
+
+    [Header("Physics")]
     [SerializeField] private LayerMask damagingLayers;
+    [SerializeField] private Transform sphereCastOrigin; // Radius of the sphere cast
+    [SerializeField] private float sphereCastRadius = 0.1f; // Radius of the sphere cast
+    [SerializeField] private float sphereCastDistance = 0.5f; // Distance to check ahead
+
 
     [Header("Components")]
     private Rigidbody rigidbody;
     private PlayerComponent player;
     private Collider collider;
+    private HandVelocity handVel;
+
+    [Header("System")]
+    private float velMag;
+
+    #region XR Callbacks
+
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        base.OnSelectEntered(args);
+        handVel = args.interactorObject.transform.GetComponent<HandVelocity>();
+    }
+
+    protected override void OnSelectExited(SelectExitEventArgs args)
+    {
+        base.OnSelectExited(args);
+        handVel = null;
+        velMag = 0;
+    }
+
+    public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
+    {
+        base.ProcessInteractable(updatePhase);
+
+        if (isSelected)
+        {
+            UpdateVelocity();
+            CheckVictemOverlap();
+        }
+    }
+
+    private void UpdateVelocity()
+    {
+        velMag = handVel ? handVel.Velocity.magnitude : 0;
+    }
+
+    private void CheckVictemOverlap()
+    {
+        Vector3 direction = handVel ? handVel.Velocity.normalized : transform.forward;
+
+        // Perform the SphereCast
+        if (Physics.SphereCast(sphereCastOrigin.position, sphereCastRadius, direction, out RaycastHit hitInfo, sphereCastDistance, damagingLayers))
+        {
+            if (hitInfo.transform.TryGetComponent<EnemyComponent>(out var enemyComponent))
+                HitVictem(enemyComponent, velMag);
+        }
+    }
+    #endregion
 
     #region Initialization Methods
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
 
@@ -36,11 +93,9 @@ public class MeleeWeapon : MonoBehaviour, IWeapon
 
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log(other);
-
         // Check if the object is on a damageable layer and has an EnemyComponent
         if ((damagingLayers.value & (1 << other.gameObject.layer)) != 0 && other.transform.TryGetComponent<EnemyComponent>(out var enemyComponent))
-            HitVictem(enemyComponent);
+            HitVictem(enemyComponent, other.relativeVelocity.magnitude);
     }
     #endregion
 
@@ -86,9 +141,8 @@ public class MeleeWeapon : MonoBehaviour, IWeapon
     /// <summary>
     /// Applies a weapons damage to a victem and degrades the weapon.
     /// </summary>
-    private void HitVictem(EnemyComponent victem)
+    private void HitVictem(EnemyComponent victem, float vel)
     {
-        float vel = rigidbody.velocity.magnitude;
         int totalDmg = Mathf.FloorToInt(Mathf.Clamp(damage * vel, 0, Damage));// Multiply damage by velocity
         int dur = totalDmg * 2;
 
