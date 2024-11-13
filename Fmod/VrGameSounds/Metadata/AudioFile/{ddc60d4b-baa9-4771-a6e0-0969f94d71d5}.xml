@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{ddc60d4b-baa9-4771-a6e0-0969f94d71d5}">
+		<property name="assetPath">
+			<value>Udey/Tech Sounds/Mouse Clicks 1.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>36.09145124716553</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b9ba75ab-2ac6-4cba-be07-15ab0290fcef}</destination>
+		</relationship>
+	</object>
+</objects>

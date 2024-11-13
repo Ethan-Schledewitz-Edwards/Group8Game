@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{018f5d92-d11e-4c02-8611-bc57b6712a95}">
+		<property name="assetPath">
+			<value>Udey/Rain/JohnRainSFXs.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>325.74693877551022</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b9ba75ab-2ac6-4cba-be07-15ab0290fcef}</destination>
+		</relationship>
+	</object>
+</objects>
