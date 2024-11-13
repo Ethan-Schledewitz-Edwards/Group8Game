@@ -9,12 +9,12 @@ namespace Sound.Scripts.Sound
     {
         public static AudioManager Instance { get; private set; }
         
-        private GameObject _player;
-        private EventInstance _musicEventInstance;
+        private GameObject player;
+        private EventInstance musicEventInstance;
         
         private void Awake()
         {
-            _player = GameObject.FindGameObjectWithTag("Player");
+            player = GameObject.FindGameObjectWithTag("Player");
             InitializeMusic(FmodEvents.Instance.Music);
             Instance = this;
             if (Instance == null)
@@ -37,19 +37,19 @@ namespace Sound.Scripts.Sound
         public EventInstance CreateEventInstance(EventReference eventReference)
         {
             EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
-            eventInstance.set3DAttributes(_player.transform.position.To3DAttributes());
+            eventInstance.set3DAttributes(player.transform.position.To3DAttributes());
             return eventInstance;
         }
 
         private void InitializeMusic(EventReference musicReference)
         {
-            _musicEventInstance = CreateEventInstance(musicReference);
-            _musicEventInstance.start();
+            musicEventInstance = CreateEventInstance(musicReference);
+            musicEventInstance.start();
         }
 
         public void SetMusicParameter(string parameterName, float parameterValue)
         {
-            _musicEventInstance.setParameterByName(parameterName, parameterValue);
+            musicEventInstance.setParameterByName(parameterName, parameterValue);
         }
     }
 }

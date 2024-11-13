@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using Unity.XR.CoreUtils;
 using UnityEngine.Assertions;
 
@@ -97,6 +98,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
         Pose m_LeftMovementPose = Pose.identity;
         Pose m_RightMovementPose = Pose.identity;
 
+
         /// <inheritdoc />
         protected override void Awake()
         {
@@ -106,7 +108,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
             m_CombinedTransform.SetParent(transform, false);
             m_CombinedTransform.localPosition = Vector3.zero;
             m_CombinedTransform.localRotation = Quaternion.identity;
-
+            
             forwardSource = m_CombinedTransform;
         }
 
@@ -182,6 +184,12 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
             var combinedPosition = Vector3.Lerp(m_RightMovementPose.position, m_LeftMovementPose.position, leftHandBlend);
             var combinedRotation = Quaternion.Slerp(m_RightMovementPose.rotation, m_LeftMovementPose.rotation, leftHandBlend);
             m_CombinedTransform.SetPositionAndRotation(combinedPosition, combinedRotation);
+
+            //plays the footstep sound when the player moves
+            if (input != Vector2.zero)
+            {
+                
+            }
 
             return base.ComputeDesiredMove(input);
         }
