@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-[RequireComponent(typeof(Rigidbody), typeof(Collider))]
+[Serializable, RequireComponent(typeof(Rigidbody), typeof(Collider))]
 public class MeleeWeapon : XRGrabInteractable, IWeapon
 {
     [Header("Properties")]
@@ -37,6 +38,10 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
     {
         base.OnSelectEntered(args);
         handVel = args.interactorObject.transform.GetComponent<HandVelocity>();
+
+        // Clear parent
+        // This will remove an item from the shelf
+        transform.parent = null;
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
