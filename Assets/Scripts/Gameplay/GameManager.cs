@@ -21,12 +21,11 @@ public class GameManager : MonoBehaviour
 
     [Header("System")]
     private int waveNumber;
-
-    private int waveSize; // The total amount of enemies this wave
-    private int waveEnemyCap; // The amount of enemies allowed on screen
-    private int enemyPool;// Enemies remaining
-
-    private int kills;
+    private int waveSize;
+    private int waveEnemyCap;
+    private int enemyPool;
+    private int killsInWave;
+    private int currentEnemiesOnScreen;
 
     private EnemyWeight[] availableEnemies;
 
@@ -37,18 +36,17 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        // Define sigleton
         if (Instance == null)
-        {
             Instance = this;
-        }
-        else Destroy(this);
+        else
+            Destroy(this);
     }
 
     private void Start()
     {
         StartGame();
     }
+
     #endregion
 
     #region Game Methods
@@ -56,26 +54,24 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         waveNumber = 1;
-
         waveSize = 5;
         waveEnemyCap = 3;
         enemyPool = waveSize;
 
-        FilterEnemies();
-
-        // Start the first round
         StartCoroutine(WaveCooldown());
     }
 
     private void StartNewWave()
     {
-        Debug.Log("Start Wave");
+        Debug.Log("Start Wave " + waveNumber);
 
-        for (int i = 0; i < waveEnemyCap; i++)
-        {
-            // Get an enemy prefab based on weighted probability
+        FilterEnemies();
+        killsInWave = 0;
+        currentEnemiesOnScreen = 0;
+
+        // Spawn initial wave enemies
+        for (int i = 0; i < Math.Min(waveEnemyCap, enemyPool); i++)
             SpawnEnemy();
-        }
 
         audioSource.PlayOneShot(roundStart);
     }
@@ -83,17 +79,12 @@ public class GameManager : MonoBehaviour
     private void EndWave()
     {
         Debug.Log($"Wave Complete: {waveNumber}");
-
-        OnWaveFinish.Invoke();
+        OnWaveFinish?.Invoke();
 
         waveNumber++;
-
-        waveSize += 1;
+        waveSize += 1 * waveNumber;
         waveEnemyCap += 1;
         enemyPool = waveSize;
-
-        // Filter out enemies not available in the current wave
-        availableEnemies = enemies.Where(e => e.FloorWave <= waveNumber).ToArray();
 
         StartCoroutine(WaveCooldown());
     }
@@ -104,79 +95,81 @@ public class GameManager : MonoBehaviour
         while (timer > 0)
         {
             timer -= Time.deltaTime;
-
             yield return null;
         }
-
-        // Start the next wave after the cooldown
         StartNewWave();
     }
 
-    /// <summary>
-    /// This method should be called when either the player dies (false), or when the player wins (true).
-    /// </summary>
-    /// <param name="isSucsessful"></param>
     public void EndGame(bool isSucsessful)
     {
-
+        // Handle game end
     }
+
     #endregion
 
     #region Enemy Methods
 
     public void SpawnEnemy()
     {
-        // Spawn the selected enemy at a random spawn point
-        int spawnIndex = UnityEngine.Random.Range(0, spawnPoints.Length);
-        EnemyComponent selectedEnemy = Instantiate(GetWeightedEnemy(), spawnPoints[spawnIndex].position, Quaternion.identity);
-        selectedEnemy.OnDeath += KillEnemy;
+        if (enemyPool <= 0 || currentEnemiesOnScreen >= waveEnemyCap)
+            return;
+
+        Transform spawn = GetRandomSpawn();
+        EnemyComponent selectedEnemy = Instantiate(GetWeightedEnemy(), spawn.position, Quaternion.identity);
+        selectedEnemy.OnDeath += EnemyDied;
+
         enemyPool--;
+        currentEnemiesOnScreen++;
     }
 
     private EnemyComponent GetWeightedEnemy()
     {
-        // Calculate the total weight of the enemy pool
         int totalWeight = availableEnemies.Sum(e => e.Weight);
-
-        // Generate a random number within the range of total weights
         int randomWeight = UnityEngine.Random.Range(0, totalWeight);
+
         foreach (var enemy in availableEnemies)
         {
             if (randomWeight < enemy.Weight)
-            {
                 return enemy.Prefab;
-            }
             randomWeight -= enemy.Weight;
         }
 
-        enemyPool--;
-
-        // Fallback
         return availableEnemies[0].Prefab;
     }
 
-    private void KillEnemy(EnemyComponent enemy)
+    private IEnumerator EnemyRespawnCooldown()
+    {
+        float timer = UnityEngine.Random.Range(4, 7);
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        SpawnEnemy();
+    }
+
+    private void EnemyDied(EnemyComponent enemy)
     {
         Debug.Log("Enemy Died");
 
-        enemy.OnDeath -= KillEnemy;
+        enemy.OnDeath -= EnemyDied;
+        currentEnemiesOnScreen--;
 
-        // Check if an enemy can take the victems place
-        if (enemyPool > 0)
-            SpawnEnemy();
-
-        kills++;
-        if (kills >= waveSize)
+        killsInWave++;
+        if (killsInWave >= waveSize)
+        {
             EndWave();
+        }
+        else if (enemyPool > 0 && currentEnemiesOnScreen < waveEnemyCap)
+        {
+            StartCoroutine(EnemyRespawnCooldown());
+        }
     }
 
     #endregion
 
     #region Utility Methods
 
-    /// <summary>
-    /// Filters out enemies not available in the current wave
-    /// </summary>
     private void FilterEnemies()
     {
         availableEnemies = enemies.Where(e => e.FloorWave <= waveNumber).ToArray();
@@ -187,8 +180,10 @@ public class GameManager : MonoBehaviour
         int spawnIndex = UnityEngine.Random.Range(0, spawnPoints.Length);
         return spawnPoints[spawnIndex];
     }
+
     #endregion
 }
+
 
 [Serializable]
 public class EnemyWeight
