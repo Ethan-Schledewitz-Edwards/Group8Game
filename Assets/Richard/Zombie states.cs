@@ -5,14 +5,26 @@ public class EnemyStateController : MonoBehaviour
 {
     public enum EnemyState { WALKING, ATTACKING, DEATH }
     public EnemyState currentState;
-
+    public GameObject destroyParent;
     // Leg movement
     public Transform leftLegJoint;
     public Transform rightLegJoint;
     public float rotationAngle = 15f;
     public float rotationDuration = 0.5f;
 
+    // Attack settings
+    public float attackRange = 5f;
+    private GameObject player;
+    public float attackChargeUp = 1f;
+
     private Coroutine walkCoroutine;
+    private float attackTimer;
+
+    // Arm settings for Zombie Attack
+    public Transform leftArm;
+    public Transform rightArm;
+    public float armRotationAngle = 30f;
+    public float rotationDurationForArms = 0.1f;
 
     // Joint settings
     public ConfigurableJoint[] joints;
@@ -20,17 +32,90 @@ public class EnemyStateController : MonoBehaviour
 
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player == null)
+        {
+            Debug.LogError("Player object with tag 'Player' not found!");
+        }
+
         TransitionToState(EnemyState.WALKING);
         StartCoroutine(WalkingState());
     }
 
     private void Update()
     {
+        if (player != null)
+        {
+            CheckAttackRange();
+        }
         if (Input.GetMouseButtonDown(0))
         {
             SwitchToNextState();
         }
     }
+
+    private void CheckAttackRange()
+    {
+        float distance = Vector3.Distance(transform.position, player.transform.position);
+
+        if (currentState != EnemyState.DEATH)
+        {
+            if (distance <= attackRange)
+            {
+                if (currentState != EnemyState.ATTACKING)
+                {
+                    TransitionToState(EnemyState.ATTACKING);
+                }
+                attackTimer += Time.deltaTime;
+                if (attackTimer >= attackChargeUp)
+                {
+                    ZombieAttack();
+                    attackTimer = 0f;
+                }
+            }
+            else
+            {
+                if (currentState == EnemyState.ATTACKING)
+                {
+                    TransitionToState(EnemyState.WALKING);
+                }
+                
+                attackTimer = 0f;
+            }
+        }
+    }
+
+    private void ZombieAttack()
+    {
+        Debug.Log("Zombie attacks!");
+        
+        StartCoroutine(RotateArm(leftArm.transform, armRotationAngle));
+        StartCoroutine(RotateArm(rightArm.transform, armRotationAngle));
+    }
+    
+    private IEnumerator RotateArm(Transform arm, float targetAngle)
+    {
+        float elapsedTime = 0f;
+        Quaternion startRotation = arm.localRotation;
+        Quaternion endRotation = startRotation * Quaternion.Euler(targetAngle, 0, 0);
+        while (elapsedTime < rotationDuration)
+        {
+            arm.localRotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime / rotationDurationForArms);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        arm.localRotation = endRotation;
+        elapsedTime = 0f;
+        while (elapsedTime < rotationDuration)
+        {
+            arm.localRotation = Quaternion.Slerp(endRotation, startRotation, elapsedTime / rotationDurationForArms);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        arm.localRotation = startRotation;
+    }
+    
 
     private void SwitchToNextState()
     {
@@ -84,10 +169,10 @@ public class EnemyStateController : MonoBehaviour
     {
         while (currentState == EnemyState.WALKING)
         {
-            yield return RotateLeg(leftLegJoint, rotationAngle);
             yield return RotateLeg(leftLegJoint, -rotationAngle);
-            yield return RotateLeg(rightLegJoint, rotationAngle);
+            yield return RotateLeg(leftLegJoint, rotationAngle);
             yield return RotateLeg(rightLegJoint, -rotationAngle);
+            yield return RotateLeg(rightLegJoint, rotationAngle);
         }
     }
 
@@ -137,6 +222,6 @@ public class EnemyStateController : MonoBehaviour
     public void Die()
     {
         UpdateJointSprings(20f, 20f); 
-        Destroy(gameObject, 3f);
+        Destroy(destroyParent, 3f);
     }
 }
