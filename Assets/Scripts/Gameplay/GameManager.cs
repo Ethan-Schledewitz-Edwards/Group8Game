@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"Wave Complete: {waveNumber}");
 
-        OnWaveFinish.Invoke();
+        OnWaveFinish?.Invoke();
 
         waveNumber++;
 
@@ -155,6 +155,19 @@ public class GameManager : MonoBehaviour
         return availableEnemies[0].Prefab;
     }
 
+    private IEnumerator EnemyRespawnCooldown()
+    {
+        float timer = UnityEngine.Random.Range(4, 7);
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+
+            yield return null;
+        }
+
+        SpawnEnemy();
+    }
+
     private void KillEnemy(EnemyComponent enemy)
     {
         Debug.Log("Enemy Died");
@@ -163,7 +176,7 @@ public class GameManager : MonoBehaviour
 
         // Check if an enemy can take the victems place
         if (enemyPool > 0)
-            SpawnEnemy();
+            StartCoroutine(EnemyRespawnCooldown());
 
         kills++;
         if (kills >= waveSize)
