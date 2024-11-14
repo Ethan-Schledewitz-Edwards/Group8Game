@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 [Serializable, RequireComponent(typeof(Rigidbody), typeof(Collider))]
-public class MeleeWeapon : UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable, IWeapon
+public class MeleeWeapon : XRGrabInteractable, IWeapon
 {
     [Header("Properties")]
     public int Damage => damage;
