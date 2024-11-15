@@ -6,18 +6,21 @@ public class EnemyComponent : EntityBase
 {
     [Header("Events")]
     public Action<EnemyComponent> OnDeath;
-
+    public EnemyStateController enemyStateController;
+    
     public override void Die()
     {
         OnDeath?.Invoke(this);
-
+        enemyStateController.TransitionToState(EnemyStateController.EnemyState.DEATH);
         Ragdoll();
     }
 
     private void Ragdoll()
     {
-        // Ragdoll the mesh
-
+        float xSpring = 20f;
+        float yzSpring = 20f;
+        enemyStateController.RagDoll(xSpring, yzSpring);
+        
         StartCoroutine(DespawnTimer());
     }
 
@@ -31,6 +34,6 @@ public class EnemyComponent : EntityBase
             yield return null;
         }
 
-        Destroy(gameObject);
+        Destroy(transform.root.gameObject);
     }
 }
