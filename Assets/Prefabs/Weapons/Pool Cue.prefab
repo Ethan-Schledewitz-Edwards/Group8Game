@@ -348,6 +348,8 @@ MonoBehaviour:
   sphereCastRadius: 0.1
   sphereCastDistance: 0.5
   audioSource: {fileID: 2067830853166779985}
+  pickupSounds:
+  - {fileID: 8300000, guid: bc37d0346a283344eb087715f037f884, type: 3}
   impactSound: {fileID: 8300000, guid: 931da741cacfdb040b98709f8cd41bb6, type: 3}
   breakSound: {fileID: 8300000, guid: a8fd08208b0493842b9e1c4c72f94c62, type: 3}
 --- !u!65 &1751912125166384414

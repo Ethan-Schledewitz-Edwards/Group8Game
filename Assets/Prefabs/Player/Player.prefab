@@ -3586,6 +3586,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a2181378391f9c94fb89920409a52017, type: 3}
   - {fileID: 8300000, guid: caf2ebc0b76b03b43b0990d72132bf19, type: 3}
   - {fileID: 8300000, guid: c40a3dc3004c24640a9d7d1b6891e0ef, type: 3}
+  _stepSounds:
+  - {fileID: 8300000, guid: 6aea304d04901ad4ba35ea88eef2e657, type: 3}
+  - {fileID: 8300000, guid: 6db04ac6fdde8704d99f0fff13e1cbf0, type: 3}
+  - {fileID: 8300000, guid: d1aeb6aa8646e5b419266f937c05e45a, type: 3}
 --- !u!82 &3475546854572156805
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3598,7 +3602,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

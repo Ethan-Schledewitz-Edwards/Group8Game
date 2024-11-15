@@ -3076,13 +3076,18 @@ MonoBehaviour:
   isDamagable: 1
   audioSource: {fileID: 7790643749384832430}
   _hurtSounds:
-  - {fileID: 8300000, guid: 89911de569486124b9621ce6c795bfe6, type: 3}
-  - {fileID: 8300000, guid: fcf3ea3b37e073b43b3a753e20f9b91d, type: 3}
-  - {fileID: 8300000, guid: d6589202df70ba647af9b6f823fa2d22, type: 3}
+  - {fileID: 8300000, guid: 6fdcae0d8c82d6147843c97aa7d45b18, type: 3}
+  - {fileID: 8300000, guid: aa63bab75b6e611479dcfbd367caa5b4, type: 3}
+  - {fileID: 8300000, guid: 0161dcab6c03b1c49a6296e264cb4cd8, type: 3}
+  - {fileID: 8300000, guid: 596bac5d060fc7546b756e40228cc416, type: 3}
   enemyStateController: {fileID: 5684357706989905448}
   weaponLayer:
     serializedVersion: 2
     m_Bits: 256
+  _ambientMoans:
+  - {fileID: 8300000, guid: 89911de569486124b9621ce6c795bfe6, type: 3}
+  - {fileID: 8300000, guid: fcf3ea3b37e073b43b3a753e20f9b91d, type: 3}
+  - {fileID: 8300000, guid: d6589202df70ba647af9b6f823fa2d22, type: 3}
 --- !u!114 &5684357706989905448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3145,7 +3150,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
