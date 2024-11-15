@@ -3438,6 +3438,7 @@ GameObject:
   - component: {fileID: 5709291673957821929}
   - component: {fileID: 552130373438414672}
   - component: {fileID: 3385499403153519446}
+  - component: {fileID: 4702791140997660219}
   m_Layer: 6
   m_Name: spine
   m_TagString: Untagged
@@ -3513,6 +3514,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0099694, y: 1.1329082, z: 0.80563945}
   m_Center: {x: 0, y: 0.17835061, z: -0.066597246}
+--- !u!114 &4702791140997660219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8851715357370788887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f5b65b3115a2b4c91f83a6234745dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 552130373438414672}
+  rotationSpeed: 5
+  moveSpeed: 3
 --- !u!1 &8886664499756601795
 GameObject:
   m_ObjectHideFlags: 0

@@ -338,11 +338,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8a0789b46c725b94390288f65fe2f67b, type: 3}
       propertyPath: m_Name
-      value: zombieWithShirt (1)
+      value: RiggedZombie
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8a0789b46c725b94390288f65fe2f67b, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1342948525764391870, guid: 8a0789b46c725b94390288f65fe2f67b, type: 3}
       propertyPath: m_Layer
@@ -500,6 +500,15 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a0789b46c725b94390288f65fe2f67b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6852967706575472830}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a0789b46c725b94390288f65fe2f67b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3085560349498146869}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a0789b46c725b94390288f65fe2f67b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1081812655668504751}
     - targetCorrespondingSourceObject: {fileID: 430108200687226393, guid: 8a0789b46c725b94390288f65fe2f67b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6724035045941938286}
@@ -1745,6 +1754,154 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8a0789b46c725b94390288f65fe2f67b, type: 3}
   m_PrefabInstance: {fileID: 4420760358555716611}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6852967706575472830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3573847983686070610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26183b2b74dfc2042b3ecf18d7393b70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  isDamagable: 1
+  audioSource: {fileID: 3085560349498146869}
+  _hurtSounds:
+  - {fileID: 8300000, guid: 6fdcae0d8c82d6147843c97aa7d45b18, type: 3}
+  - {fileID: 8300000, guid: aa63bab75b6e611479dcfbd367caa5b4, type: 3}
+  - {fileID: 8300000, guid: 0161dcab6c03b1c49a6296e264cb4cd8, type: 3}
+  - {fileID: 8300000, guid: 596bac5d060fc7546b756e40228cc416, type: 3}
+  enemyStateController: {fileID: 3275021238443283297}
+  weaponLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  _ambientMoans:
+  - {fileID: 8300000, guid: 89911de569486124b9621ce6c795bfe6, type: 3}
+  - {fileID: 8300000, guid: fcf3ea3b37e073b43b3a753e20f9b91d, type: 3}
+  - {fileID: 8300000, guid: d6589202df70ba647af9b6f823fa2d22, type: 3}
+--- !u!82 &3085560349498146869
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3573847983686070610}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!136 &1081812655668504751
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3573847983686070610}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.13737413
+  m_Height: 0.84858805
+  m_Direction: 1
+  m_Center: {x: 0.020681335, y: -0.014262913, z: 0.023247382}
 --- !u!1 &3588352040688936240 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 906860925323602227, guid: 8a0789b46c725b94390288f65fe2f67b, type: 3}
@@ -2122,7 +2279,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f5b65b3115a2b4c91f83a6234745dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   rb: {fileID: 6724035045941938286}
   rotationSpeed: 5
   moveSpeed: 20
@@ -2138,14 +2294,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558a1cbf467a8f840ae48c9a6d170f7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyComponent: {fileID: 0}
+  enemyComponent: {fileID: 6852967706575472830}
   currentState: 0
   destroyParent: {fileID: 3573847983686070610}
   leftLegJoint: {fileID: 1135795953755134335}
   rightLegJoint: {fileID: 2306118416617957227}
   rotationAngle: 25
   rotationDuration: 0.5
-  attackRange: 1
+  attackRange: 2
   attackChargeUp: 1
   leftArm: {fileID: 8327806235233760048}
   rightArm: {fileID: 7236313058693153624}
