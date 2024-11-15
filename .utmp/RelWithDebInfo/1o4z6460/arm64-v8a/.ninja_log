@@ -1,0 +1,11 @@
+# ninja log v5
+58	542	7534136780415271	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	e8f17f9cc283d8f3
+544	909	7534136783399686	C:/Users/User/Documents/Zombies/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/1o4z6460/obj/arm64-v8a/libswappywrapper.so	5fab182de7bef6d1
+21	1403	7534136789162690	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	b7b1d1f0c9e2441b
+14	1416	7534136789267508	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	7d52c3e12d372eef
+36	1453	7534136789663965	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	da20d22234104c
+46	1574	7534136790883856	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	7abc5836f1a33553
+8	1642	7534136791576409	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	7e85c44a70427342
+27	1847	7534136793615841	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	cc7216470f98548a
+1	1933	7534136794523163	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	abb11b4c1fb975a0
+1933	2150	7534136796011604	C:/Users/User/Documents/Zombies/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/1o4z6460/obj/arm64-v8a/libgame.so	32113cbd6d85365f
