@@ -3009,6 +3009,8 @@ GameObject:
   - component: {fileID: 4849706689262332264}
   - component: {fileID: 7888205294669611482}
   - component: {fileID: 2825216575837587558}
+  - component: {fileID: 5684357706989905448}
+  - component: {fileID: 3696251843056726596}
   m_Layer: 6
   m_Name: RiggedZombie
   m_TagString: Untagged
@@ -3071,6 +3073,59 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   isDamagable: 1
+  audioSource: {fileID: 0}
+  _hurtSounds: []
+  enemyStateController: {fileID: 5684357706989905448}
+--- !u!114 &5684357706989905448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8474882565707789043}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 558a1cbf467a8f840ae48c9a6d170f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyComponent: {fileID: 2825216575837587558}
+  currentState: 0
+  destroyParent: {fileID: 0}
+  leftLegJoint: {fileID: 0}
+  rightLegJoint: {fileID: 0}
+  rotationAngle: 15
+  rotationDuration: 0.5
+  attackRange: 2
+  attackChargeUp: 1
+  leftArm: {fileID: 0}
+  rightArm: {fileID: 0}
+  armRotationAngle: 30
+  rotationDurationForArms: 0.1
+  joints: []
+  Arm: []
+--- !u!136 &3696251843056726596
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8474882565707789043}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.14
+  m_Height: 0.76
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8728308833606963905
 GameObject:
   m_ObjectHideFlags: 0
