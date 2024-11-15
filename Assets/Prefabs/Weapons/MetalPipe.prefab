@@ -225,6 +225,8 @@ MonoBehaviour:
   sphereCastOrigin: {fileID: 939861702823564786}
   sphereCastRadius: 0.1
   sphereCastDistance: 0.5
+  _audioSource: {fileID: 0}
+  _impactSound: {fileID: 0}
 --- !u!65 &5380930890567230268
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -310,7 +312,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: ab3a79eba4de4be0ad5fead9fb858190, type: 3}
+  - {fileID: -876546973899608171, guid: f7f2125358ee3ac469b744333bbb4036, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -948,9 +948,9 @@
     "m_ShaderOutputName": "Specular",
     "m_StageCapability": 2,
     "m_Value": {
-        "x": 0.5,
-        "y": 0.5,
-        "z": 0.5
+        "x": 0.14150941371917725,
+        "y": 0.1355019360780716,
+        "z": 0.1355019360780716
     },
     "m_DefaultValue": {
         "x": 0.0,
