@@ -35,11 +35,6 @@ public class EnemyStateController : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
 
-        if (player == null)
-        {
-            Debug.LogError("Player object with tag 'Player' not found!");
-        }
-
         TransitionToState(EnemyState.WALKING);
         StartCoroutine(WalkingState());
     }
@@ -85,7 +80,7 @@ public class EnemyStateController : MonoBehaviour
 
     private void ZombieAttack()
     {
-        Debug.Log("Zombie attacks!");
+        //Debug.Log("Zombie attacks!");
         
         StartCoroutine(RotateArm(leftArm.transform, armRotationAngle));
         StartCoroutine(RotateArm(rightArm.transform, armRotationAngle));
