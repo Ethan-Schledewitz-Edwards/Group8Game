@@ -3013,7 +3013,7 @@ GameObject:
   - component: {fileID: 3696251843056726596}
   m_Layer: 6
   m_Name: RiggedZombie
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3076,6 +3076,9 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   _hurtSounds: []
   enemyStateController: {fileID: 5684357706989905448}
+  weaponLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &5684357706989905448
 MonoBehaviour:
   m_ObjectHideFlags: 0

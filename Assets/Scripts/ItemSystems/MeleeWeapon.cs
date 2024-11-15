@@ -96,16 +96,6 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
 
     #endregion
 
-    #region Unity Callbacks
-
-    private void OnCollisionEnter(Collision other)
-    {
-        // Check if the object is on a damageable layer and has an EnemyComponent
-        if ((damagingLayers.value & (1 << other.gameObject.layer)) != 0 && other.transform.TryGetComponent<EnemyComponent>(out var enemyComponent))
-            HitVictem(enemyComponent, other.relativeVelocity.magnitude);
-    }
-    #endregion
-
     #region Durability Methods
     public void SetDurability(int value)
     {

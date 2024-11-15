@@ -3559,7 +3559,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   isDamagable: 1
-  DropPoint: {fileID: 0}
+  audioSource: {fileID: 0}
+  _hurtSounds: []
+  _deathSounds: []
 --- !u!1 &7338137251233663407
 GameObject:
   m_ObjectHideFlags: 0
@@ -4626,7 +4628,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0

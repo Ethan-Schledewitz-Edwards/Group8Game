@@ -7,7 +7,20 @@ public class EnemyComponent : EntityBase
     [Header("Events")]
     public Action<EnemyComponent> OnDeath;
     public EnemyStateController enemyStateController;
-    
+
+    [SerializeField] private LayerMask weaponLayer;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Check if the colliding object is on the weapon layer
+        if ((weaponLayer.value & (1 << other.gameObject.layer)) != 0)
+        {
+            // Get the Weapon component if needed, or just handle the hit directly
+            if (other.TryGetComponent<IWeapon>(out var weapon))
+                TakeDamage(weapon.Damage);
+        }
+    }
+
     public override void Die()
     {
         OnDeath?.Invoke(this);

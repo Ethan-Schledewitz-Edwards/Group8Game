@@ -17,7 +17,9 @@ public class GameManager : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip roundStart;
-    [SerializeField] private AudioClip gameOver;
+
+    [Header("Components")]
+    private UIManager uiManager;
 
     [Header("System")]
     private int waveNumber;
@@ -26,7 +28,6 @@ public class GameManager : MonoBehaviour
     private int enemyPool;
     private int killsInWave;
     private int currentEnemiesOnScreen;
-
     private EnemyWeight[] availableEnemies;
 
     [Header("Events")]
@@ -45,6 +46,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         StartGame();
+
+        uiManager = UIManager.Instance;
     }
 
     #endregion
@@ -63,7 +66,7 @@ public class GameManager : MonoBehaviour
 
     private void StartNewWave()
     {
-        Debug.Log("Start Wave " + waveNumber);
+        uiManager.WaveText.SetWave(waveNumber);
 
         FilterEnemies();
         killsInWave = 0;
