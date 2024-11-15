@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class PlayerComponent : EntityBase
 {
-    [field: SerializeField] public Transform DropPoint;
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] _deathSounds;
 
     public override void Die()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Do Die Things Lmao");
+
+        if (_deathSounds != null && _deathSounds.Length > 0)
+            audioSource.PlayOneShot(_deathSounds[Random.Range(0, _deathSounds.Length)]);
     }
 }

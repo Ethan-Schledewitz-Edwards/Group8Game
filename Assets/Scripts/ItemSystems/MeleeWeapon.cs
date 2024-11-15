@@ -23,7 +23,7 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
 
     [Header("Audio")]
     [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private AudioClip _hitSound;
+    [SerializeField] private AudioClip _impactSound;
 
     [Header("Components")]
     private Rigidbody rigidbody;
@@ -157,7 +157,8 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
         victem.TakeDamage(totalDmg);
 
         // Play SFX
-        _audioSource.PlayOneShot(_hitSound);
+        if (_impactSound != null)
+            _audioSource.PlayOneShot(_impactSound);
     }
 
     #endregion

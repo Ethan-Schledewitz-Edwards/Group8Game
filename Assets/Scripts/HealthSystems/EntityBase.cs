@@ -15,6 +15,10 @@ public abstract class EntityBase : MonoBehaviour, IHealthComponent, IDamagable
     public bool IsDamagable => isDamagable;
     [SerializeField] private bool isDamagable;
 
+    [Header("Audio")]
+    [SerializeField] protected AudioSource audioSource;
+    [SerializeField] private AudioClip[] _hurtSounds;
+
     #region Initialization Methods
 
     private void Awake()
@@ -52,6 +56,10 @@ public abstract class EntityBase : MonoBehaviour, IHealthComponent, IDamagable
             RemoveHealth(amount);
 
             // Spawn particle effects
+
+            // Play Audio
+            if (_hurtSounds != null && _hurtSounds.Length > 0)
+                audioSource.PlayOneShot(_hurtSounds[Random.Range(0, _hurtSounds.Length)]);
         }
     }
 
