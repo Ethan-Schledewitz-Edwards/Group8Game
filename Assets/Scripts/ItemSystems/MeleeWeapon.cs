@@ -15,13 +15,15 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
     public int MaxDurability => maxDurability;
     [SerializeField] private int maxDurability;
 
-
     [Header("Physics")]
     [SerializeField] private LayerMask damagingLayers;
     [SerializeField] private Transform sphereCastOrigin; // Radius of the sphere cast
     [SerializeField] private float sphereCastRadius = 0.1f; // Radius of the sphere cast
     [SerializeField] private float sphereCastDistance = 0.5f; // Distance to check ahead
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _hitSound;
 
     [Header("Components")]
     private Rigidbody rigidbody;
@@ -153,6 +155,9 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
 
         RemoveDurability(dur);
         victem.TakeDamage(totalDmg);
+
+        // Play SFX
+        _audioSource.PlayOneShot(_hitSound);
     }
 
     #endregion
