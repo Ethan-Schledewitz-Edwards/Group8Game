@@ -14,10 +14,20 @@ public class EnemyComponent : EntityBase
     [SerializeField] private AudioClip[] _ambientMoans;
 
     [Header("System")]
-    private bool isCounting;
-    private float timer = 10f;
+    private bool isCounting = true;
+    private float timer;
+
+    #region Initialization Methods
+
+    private void Awake()
+    {
+        timer = UnityEngine.Random.Range(5, 15);
+        isCounting = true;
+    }
+    #endregion
 
     #region Unity Callbacks
+
     private void Update()
     {
         if (isCounting)
@@ -33,7 +43,7 @@ public class EnemyComponent : EntityBase
                         audioSource.PlayOneShot(_ambientMoans[UnityEngine.Random.Range(0, _ambientMoans.Length)]);
 
                     // Reset timer
-                    timer = 10f;
+                    timer = UnityEngine.Random.Range(5, 15);
                 }
             }
         }
@@ -53,6 +63,9 @@ public class EnemyComponent : EntityBase
 
     public override void Die()
     {
+        // Stop moans on death
+        isCounting = false;
+
         OnDeath?.Invoke(this);
         enemyStateController.TransitionToState(EnemyStateController.EnemyState.DEATH);
         Ragdoll();

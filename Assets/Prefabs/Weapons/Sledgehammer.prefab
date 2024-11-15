@@ -447,8 +447,8 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
-  damage: 100
-  maxDurability: 1000
+  damage: 10
+  maxDurability: 20
   damagingLayers:
     serializedVersion: 2
     m_Bits: 64

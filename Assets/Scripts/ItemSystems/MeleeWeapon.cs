@@ -135,6 +135,10 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
         rigidbody.useGravity = false;
         player = playerComponent;
 
+        // Play pickup sound
+        if (pickupSounds != null && pickupSounds.Length > 0)
+            audioSource.PlayOneShot(pickupSounds[UnityEngine.Random.Range(0, pickupSounds.Length)]);
+
         transform.parent = parent;
     }
 
