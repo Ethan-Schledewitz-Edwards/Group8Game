@@ -7,8 +7,10 @@ public class PlayerComponent : EntityBase
 
     public override void Die()
     {
-        Debug.Log("Do Die Things Lmao");
+        // Trigger game over screen
+        UIManager.Instance.DeathScreen.TriggerGameOver();
 
+        // Play death sounds
         if (_deathSounds != null && _deathSounds.Length > 0)
             audioSource.PlayOneShot(_deathSounds[Random.Range(0, _deathSounds.Length)]);
     }

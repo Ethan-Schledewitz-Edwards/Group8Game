@@ -12,6 +12,8 @@ public interface IWeapon
     public abstract void AddDurability(int value);
 
     public abstract void RemoveDurability(int value);
+
+    public abstract void BreakWeapon();
     #endregion
 
     #region Equip Methods

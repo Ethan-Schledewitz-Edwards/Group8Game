@@ -13,4 +13,5 @@ public class UIManager : MonoBehaviour
     }
 
     [field: SerializeField] public WaveTextUI WaveText { get; private set; }
+    [field: SerializeField] public DeathScreen_UI DeathScreen { get; private set; }
 }
