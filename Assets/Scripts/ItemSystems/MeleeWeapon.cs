@@ -22,8 +22,9 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
     [SerializeField] private float sphereCastDistance = 0.5f; // Distance to check ahead
 
     [Header("Audio")]
-    [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private AudioClip _impactSound;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip impactSound;
+    [SerializeField] private AudioClip breakSound;
 
     [Header("Components")]
     private Rigidbody rigidbody;
@@ -99,7 +100,11 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
     #region Durability Methods
     public void SetDurability(int value)
     {
-        durability = value;
+        durability = Mathf.Clamp(value, 0, maxDurability);
+
+        // Break the weapon if the durability is reduced to zero
+        if (durability <= 0)
+            BreakWeapon();
     }
 
     public void AddDurability(int value)
@@ -110,6 +115,15 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
     public void RemoveDurability(int value)
     {
         SetDurability(durability - value);
+    }
+
+    public void BreakWeapon()
+    {
+        Destroy(gameObject);
+
+        // Play SFX
+        if (impactSound != null)
+            audioSource.PlayOneShot(impactSound);
     }
     #endregion
 
@@ -147,9 +161,8 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
         victem.TakeDamage(totalDmg);
 
         // Play SFX
-        if (_impactSound != null)
-            _audioSource.PlayOneShot(_impactSound);
+        if (impactSound != null)
+            audioSource.PlayOneShot(impactSound);
     }
-
     #endregion
 }

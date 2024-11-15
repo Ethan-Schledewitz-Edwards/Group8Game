@@ -3012,7 +3012,7 @@ GameObject:
   - component: {fileID: 5684357706989905448}
   - component: {fileID: 3696251843056726596}
   m_Layer: 6
-  m_Name: RiggedZombie
+  m_Name: Zombie
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
