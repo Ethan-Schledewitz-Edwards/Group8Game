@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="Bank" id="{812cf1bd-65ce-484f-83b5-d42ac7f47f82}">
+		<property name="name">
+			<value>Death Scream</value>
+		</property>
+		<relationship name="folder">
+			<destination>{cbd2c3ac-c7fa-49a8-8287-7e7fd5478d32}</destination>
+		</relationship>
+	</object>
+</objects>
