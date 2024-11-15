@@ -4,6 +4,7 @@ using System.Collections;
 public class EnemyStateController : MonoBehaviour
 {
     public enum EnemyState { WALKING, ATTACKING, DEATH }
+    public EnemyComponent enemyComponent;
     public EnemyState currentState;
     public GameObject destroyParent;
     // Leg movement
@@ -13,7 +14,7 @@ public class EnemyStateController : MonoBehaviour
     public float rotationDuration = 0.5f;
 
     // Attack settings
-    public float attackRange = 5f;
+    public float attackRange = 2f;
     private GameObject player;
     public float attackChargeUp = 1f;
 
@@ -34,11 +35,6 @@ public class EnemyStateController : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
 
-        if (player == null)
-        {
-            Debug.LogError("Player object with tag 'Player' not found!");
-        }
-
         TransitionToState(EnemyState.WALKING);
         StartCoroutine(WalkingState());
     }
@@ -48,10 +44,6 @@ public class EnemyStateController : MonoBehaviour
         if (player != null)
         {
             CheckAttackRange();
-        }
-        if (Input.GetMouseButtonDown(0))
-        {
-            SwitchToNextState();
         }
     }
 
@@ -88,10 +80,12 @@ public class EnemyStateController : MonoBehaviour
 
     private void ZombieAttack()
     {
-        Debug.Log("Zombie attacks!");
+        //Debug.Log("Zombie attacks!");
         
         StartCoroutine(RotateArm(leftArm.transform, armRotationAngle));
         StartCoroutine(RotateArm(rightArm.transform, armRotationAngle));
+        
+        //Make player take damage
     }
     
     private IEnumerator RotateArm(Transform arm, float targetAngle)
@@ -115,25 +109,8 @@ public class EnemyStateController : MonoBehaviour
         }
         arm.localRotation = startRotation;
     }
-    
 
-    private void SwitchToNextState()
-    {
-        if (currentState == EnemyState.WALKING)
-        {
-            TransitionToState(EnemyState.ATTACKING);
-        }
-        else if (currentState == EnemyState.ATTACKING)
-        {
-            TransitionToState(EnemyState.DEATH);
-        }
-        else if (currentState == EnemyState.DEATH)
-        {
-            TransitionToState(EnemyState.WALKING);
-        }
-    }
-
-    private void TransitionToState(EnemyState newState)
+    public void TransitionToState(EnemyState newState)
     {
         if (currentState == newState) return;
 
@@ -146,12 +123,10 @@ public class EnemyStateController : MonoBehaviour
                 walkCoroutine = StartCoroutine(WalkingState());
                 break;
             case EnemyState.ATTACKING:
-                Debug.Log("Enemy is attacking!");
+                //Debug.Log("Enemy is attacking!");
                 break;
             case EnemyState.DEATH:
-                Die();
-                ResetRotations();
-                Debug.Log("Enemy has died.");
+                //Debug.Log("Enemy has died.");
                 break;
         }
     }
@@ -191,8 +166,9 @@ public class EnemyStateController : MonoBehaviour
         leg.localRotation = endRotation;
     }
 
-    public void UpdateJointSprings(float xSpring, float yzSpring)
+    public void RagDoll(float xSpring, float yzSpring)
     {
+        ResetRotations();
         foreach (ConfigurableJoint joint in joints)
         {
             if (joint != null)
@@ -217,11 +193,5 @@ public class EnemyStateController : MonoBehaviour
                 jointTransform.localRotation = Quaternion.identity;
             }
         }
-    }
-
-    public void Die()
-    {
-        UpdateJointSprings(20f, 20f); 
-        Destroy(destroyParent, 3f);
     }
 }
