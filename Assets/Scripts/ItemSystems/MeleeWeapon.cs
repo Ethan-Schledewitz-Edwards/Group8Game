@@ -23,6 +23,7 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip[] pickupSounds;
     [SerializeField] private AudioClip impactSound;
     [SerializeField] private AudioClip breakSound;
 

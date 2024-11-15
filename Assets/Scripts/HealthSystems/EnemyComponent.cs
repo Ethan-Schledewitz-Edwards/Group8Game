@@ -10,6 +10,9 @@ public class EnemyComponent : EntityBase
 
     [SerializeField] private LayerMask weaponLayer;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip[] _ambientMoans;
+
     private void OnTriggerEnter(Collider other)
     {
         // Check if the colliding object is on the weapon layer
