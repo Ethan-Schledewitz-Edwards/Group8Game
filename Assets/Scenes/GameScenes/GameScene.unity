@@ -16371,7 +16371,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &958603245
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16743,7 +16743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <WaveText>k__BackingField: {fileID: 752979882}
-  <DeathScreen>k__BackingField: {fileID: 0}
+  <DeathScreen>k__BackingField: {fileID: 1672852976}
 --- !u!1001 &996368733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26939,7 +26939,7 @@ Animator:
   m_GameObject: {fileID: 1672852974}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 99c04f12fc851404f8dca252bbf1119d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 268d9ff9ebba84f4792e9ad588f4137a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

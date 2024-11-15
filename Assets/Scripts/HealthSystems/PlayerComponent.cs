@@ -4,6 +4,8 @@ public class PlayerComponent : EntityBase
 {
     [Header("Audio")]
     [SerializeField] private AudioClip[] _deathSounds;
+    [SerializeField] private AudioClip[] _stepSounds;
+
 
     public override void Die()
     {

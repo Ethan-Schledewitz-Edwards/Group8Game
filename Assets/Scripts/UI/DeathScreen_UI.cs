@@ -33,6 +33,7 @@ public class DeathScreen_UI : MonoBehaviour
     public void StartCount()
     {
         isCounting = true;
+        timer = 6f;
     }
     #endregion
 
@@ -49,7 +50,7 @@ public class DeathScreen_UI : MonoBehaviour
                 _timerText.text = $"{messageText} {Mathf.FloorToInt(timer)}";
 
                 // Return to main menu after timer runs out
-                if (timer <= 0)
+                if (timer <= 1)
                     MainMenu();
             }
         }
