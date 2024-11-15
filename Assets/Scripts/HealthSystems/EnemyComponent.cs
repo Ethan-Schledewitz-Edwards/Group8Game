@@ -13,6 +13,32 @@ public class EnemyComponent : EntityBase
     [Header("Audio")]
     [SerializeField] private AudioClip[] _ambientMoans;
 
+    [Header("System")]
+    private bool isCounting;
+    private float timer = 10f;
+
+    #region Unity Callbacks
+    private void Update()
+    {
+        if (isCounting)
+        {
+            if (timer > 0)
+            {
+                timer -= Time.deltaTime;
+
+                // Play moan
+                if (timer <= 1)
+                {
+                    if (_ambientMoans != null && _ambientMoans.Length > 0)
+                        audioSource.PlayOneShot(_ambientMoans[UnityEngine.Random.Range(0, _ambientMoans.Length)]);
+
+                    // Reset timer
+                    timer = 10f;
+                }
+            }
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         // Check if the colliding object is on the weapon layer
@@ -23,6 +49,7 @@ public class EnemyComponent : EntityBase
                 TakeDamage(weapon.Damage);
         }
     }
+    #endregion
 
     public override void Die()
     {
