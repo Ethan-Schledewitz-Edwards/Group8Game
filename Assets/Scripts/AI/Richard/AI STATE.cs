@@ -31,6 +31,11 @@ public class EnemyStateController : MonoBehaviour
     public ConfigurableJoint[] joints;
     public Transform[] Arm;
 
+    [Header("Attacks")]
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private LayerMask damagingLayers;
+    [SerializeField] private float castRadius = 2f;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -80,12 +85,22 @@ public class EnemyStateController : MonoBehaviour
 
     private void ZombieAttack()
     {
-        //Debug.Log("Zombie attacks!");
-        
         StartCoroutine(RotateArm(leftArm.transform, armRotationAngle));
         StartCoroutine(RotateArm(rightArm.transform, armRotationAngle));
-        
-        //Make player take damage
+
+        // Make player take damage
+        RaycastHit hit;
+        if (Physics.SphereCast(attackPoint.position, castRadius, transform.forward, out hit, castRadius, damagingLayers, QueryTriggerInteraction.Collide))
+        {
+            Debug.Log("Hit Something on layer");
+
+            if (hit.transform.TryGetComponent(out PlayerComponent player))
+            {
+                Debug.Log("Player");
+
+                player.TakeDamage(2);
+            }
+        }
     }
     
     private IEnumerator RotateArm(Transform arm, float targetAngle)
@@ -193,5 +208,11 @@ public class EnemyStateController : MonoBehaviour
                 jointTransform.localRotation = Quaternion.identity;
             }
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(attackPoint.position, castRadius);
     }
 }

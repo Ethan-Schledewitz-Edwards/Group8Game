@@ -3520,6 +3520,7 @@ GameObject:
   - component: {fileID: 4134505312059479865}
   - component: {fileID: 8602242183909750154}
   - component: {fileID: 3475546854572156805}
+  - component: {fileID: 5267440865232623221}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -3558,7 +3559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3eb29112c9c5144939120ef997642a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 12
   isDamagable: 1
   audioSource: {fileID: 3475546854572156805}
   _hurtSounds:
@@ -3687,6 +3688,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!136 &5267440865232623221
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7313654230448209575}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &7338137251233663407
 GameObject:
   m_ObjectHideFlags: 0

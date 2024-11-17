@@ -1170,10 +1170,10 @@
     "m_Guid": {
         "m_GuidSerialized": "498f1f1e-28be-42f6-b482-f3601310bef9"
     },
-    "m_Name": "WoodColor",
+    "m_Name": "_BaseColor",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "WoodColor",
-    "m_DefaultReferenceName": "_WoodColor",
+    "m_RefNameGeneratedByDisplayName": "_BaseColor",
+    "m_DefaultReferenceName": "_BaseColor",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -1455,7 +1455,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "a0182c1355cb42598828995cdece11dc",
     "m_Id": 0,
-    "m_DisplayName": "WoodColor",
+    "m_DisplayName": "_BaseColor",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
