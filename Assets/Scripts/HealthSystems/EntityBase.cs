@@ -13,7 +13,7 @@ public abstract class EntityBase : MonoBehaviour, IHealthComponent, IDamagable
     private bool isDead;
 
     public bool IsDamagable => isDamagable;
-    [SerializeField] private bool isDamagable;
+    [SerializeField] protected bool isDamagable;
 
     [Header("Audio")]
     [SerializeField] protected AudioSource audioSource;
@@ -21,7 +21,7 @@ public abstract class EntityBase : MonoBehaviour, IHealthComponent, IDamagable
 
     #region Initialization Methods
 
-    private void Awake()
+    protected virtual void Awake()
     {
         SetHealth(maxHealth);
     }
@@ -34,9 +34,13 @@ public abstract class EntityBase : MonoBehaviour, IHealthComponent, IDamagable
     {
         health = Mathf.Clamp(value, 0, maxHealth);
 
-        isDead = health <= 0;
-        if (isDead)
-            Die();
+        if (!isDead)
+        {
+            isDead = health <= 0;
+
+            if (isDead)
+                Die();
+        }
     }
 
     public void AddHealth(int value)

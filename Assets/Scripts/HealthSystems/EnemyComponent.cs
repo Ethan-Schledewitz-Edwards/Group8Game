@@ -6,7 +6,7 @@ public class EnemyComponent : EntityBase
 {
     [Header("Events")]
     public Action<EnemyComponent> OnDeath;
-    public EnemyStateController enemyStateController;
+    public EnemyAI enemyAI;
 
     [SerializeField] private LayerMask weaponLayer;
 
@@ -67,7 +67,7 @@ public class EnemyComponent : EntityBase
         isCounting = false;
 
         OnDeath?.Invoke(this);
-        enemyStateController.TransitionToState(EnemyStateController.EnemyState.DEATH);
+        enemyAI.TransitionToState(EnemyAI.EEnemyState.DEATH);
         Ragdoll();
     }
 
@@ -75,7 +75,7 @@ public class EnemyComponent : EntityBase
     {
         float xSpring = 20f;
         float yzSpring = 20f;
-        enemyStateController.RagDoll(xSpring, yzSpring);
+        enemyAI.RagDoll(xSpring, yzSpring);
         
         StartCoroutine(DespawnTimer());
     }

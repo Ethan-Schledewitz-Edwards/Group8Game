@@ -1,12 +1,15 @@
 using UnityEngine;
+using UnityEngine.AI;
 using System.Collections;
 
-public class EnemyStateController : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class EnemyAI : MonoBehaviour
 {
-    public enum EnemyState { WALKING, ATTACKING, DEATH }
+    public enum EEnemyState { WALKING, ATTACKING, DEATH }
     public EnemyComponent enemyComponent;
-    public EnemyState currentState;
+    public EEnemyState currentState;
     public GameObject destroyParent;
+
     // Leg movement
     public Transform leftLegJoint;
     public Transform rightLegJoint;
@@ -15,11 +18,8 @@ public class EnemyStateController : MonoBehaviour
 
     // Attack settings
     public float attackRange = 2f;
-    private GameObject player;
-    public float attackChargeUp = 1f;
-
-    private Coroutine walkCoroutine;
-    private float attackTimer;
+    private Transform player;
+    public float attackChargeUp = 2f;
 
     // Arm settings for Zombie Attack
     public Transform leftArm;
@@ -31,38 +31,96 @@ public class EnemyStateController : MonoBehaviour
     public ConfigurableJoint[] joints;
     public Transform[] Arm;
 
+    // Navigation
+    public float rotationSpeed = 5f;
+    public float moveSpeed = 3f;
+    private NavMeshPath path;
+
     [Header("Attacks")]
     [SerializeField] private Transform attackPoint;
     [SerializeField] private LayerMask damagingLayers;
     [SerializeField] private float castRadius = 2f;
 
+    [Header("Components")]
+    private Rigidbody rb;
+
+    [Header("System")]
+    private Coroutine walkCoroutine;
+    private float attackTimer;
+
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (player == null)
+        {
+            Debug.LogError("Player not found! Make sure the player GameObject has the 'Player' tag assigned.");
+        }
 
-        TransitionToState(EnemyState.WALKING);
+        rb = GetComponent<Rigidbody>();
+        path = new NavMeshPath();
+
+        TransitionToState(EEnemyState.WALKING);
         StartCoroutine(WalkingState());
     }
 
     private void Update()
     {
-        if (player != null)
+        if (player == null) return;
+
+        UpdatePath();
+
+        if (currentState == EEnemyState.WALKING && path.corners.Length > 1)
         {
-            CheckAttackRange();
+            RotateTowardsTarget(path.corners[1]);
+        }
+
+        CheckAttackRange();
+    }
+
+    private void UpdatePath()
+    {
+        if (player == null) return;
+
+        NavMesh.CalculatePath(transform.position, player.position, NavMesh.AllAreas, path);
+    }
+
+    private void RotateTowardsTarget(Vector3 targetPosition)
+    {
+        Vector3 directionToTarget = targetPosition - transform.position;
+        directionToTarget.y = 0;
+
+        if (directionToTarget.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * rotationSpeed));
+        }
+
+        MoveTowardsTarget(targetPosition);
+    }
+
+    private void MoveTowardsTarget(Vector3 targetPosition)
+    {
+        Vector3 directionToTarget = targetPosition - transform.position;
+        directionToTarget.y = 0;
+
+        if (directionToTarget.sqrMagnitude > 0.01f)
+        {
+            Vector3 movement = directionToTarget.normalized * (moveSpeed * Time.deltaTime);
+            rb.MovePosition(transform.position + movement);
         }
     }
 
     private void CheckAttackRange()
     {
-        float distance = Vector3.Distance(transform.position, player.transform.position);
+        float distance = Vector3.Distance(transform.position, player.position);
 
-        if (currentState != EnemyState.DEATH)
+        if (currentState != EEnemyState.DEATH)
         {
             if (distance <= attackRange)
             {
-                if (currentState != EnemyState.ATTACKING)
+                if (currentState != EEnemyState.ATTACKING)
                 {
-                    TransitionToState(EnemyState.ATTACKING);
+                    TransitionToState(EEnemyState.ATTACKING);
                 }
                 attackTimer += Time.deltaTime;
                 if (attackTimer >= attackChargeUp)
@@ -73,11 +131,11 @@ public class EnemyStateController : MonoBehaviour
             }
             else
             {
-                if (currentState == EnemyState.ATTACKING)
+                if (currentState == EEnemyState.ATTACKING)
                 {
-                    TransitionToState(EnemyState.WALKING);
+                    TransitionToState(EEnemyState.WALKING);
                 }
-                
+
                 attackTimer = 0f;
             }
         }
@@ -88,27 +146,15 @@ public class EnemyStateController : MonoBehaviour
         StartCoroutine(RotateArm(leftArm.transform, armRotationAngle));
         StartCoroutine(RotateArm(rightArm.transform, armRotationAngle));
 
-        // Make player take damage
-        RaycastHit hit;
-        if (Physics.SphereCast(attackPoint.position, castRadius, transform.forward, out hit, castRadius, damagingLayers, QueryTriggerInteraction.Collide))
-        {
-            Debug.Log("Hit Something on layer");
-
-            if (hit.transform.TryGetComponent(out PlayerComponent player))
-            {
-                Debug.Log("Player");
-
-                player.TakeDamage(2);
-            }
-        }
+        PlayerComponent.Instance.TakeDamage(2);
     }
-    
+
     private IEnumerator RotateArm(Transform arm, float targetAngle)
     {
         float elapsedTime = 0f;
         Quaternion startRotation = arm.localRotation;
         Quaternion endRotation = startRotation * Quaternion.Euler(targetAngle, 0, 0);
-        while (elapsedTime < rotationDuration)
+        while (elapsedTime < rotationDurationForArms)
         {
             arm.localRotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime / rotationDurationForArms);
             elapsedTime += Time.deltaTime;
@@ -116,7 +162,7 @@ public class EnemyStateController : MonoBehaviour
         }
         arm.localRotation = endRotation;
         elapsedTime = 0f;
-        while (elapsedTime < rotationDuration)
+        while (elapsedTime < rotationDurationForArms)
         {
             arm.localRotation = Quaternion.Slerp(endRotation, startRotation, elapsedTime / rotationDurationForArms);
             elapsedTime += Time.deltaTime;
@@ -125,7 +171,7 @@ public class EnemyStateController : MonoBehaviour
         arm.localRotation = startRotation;
     }
 
-    public void TransitionToState(EnemyState newState)
+    public void TransitionToState(EEnemyState newState)
     {
         if (currentState == newState) return;
 
@@ -134,14 +180,12 @@ public class EnemyStateController : MonoBehaviour
 
         switch (currentState)
         {
-            case EnemyState.WALKING:
+            case EEnemyState.WALKING:
                 walkCoroutine = StartCoroutine(WalkingState());
                 break;
-            case EnemyState.ATTACKING:
-                //Debug.Log("Enemy is attacking!");
+            case EEnemyState.ATTACKING:
                 break;
-            case EnemyState.DEATH:
-                //Debug.Log("Enemy has died.");
+            case EEnemyState.DEATH:
                 break;
         }
     }
@@ -157,7 +201,7 @@ public class EnemyStateController : MonoBehaviour
 
     private IEnumerator WalkingState()
     {
-        while (currentState == EnemyState.WALKING)
+        while (currentState == EEnemyState.WALKING)
         {
             yield return RotateLeg(leftLegJoint, -rotationAngle);
             yield return RotateLeg(leftLegJoint, rotationAngle);
@@ -210,9 +254,17 @@ public class EnemyStateController : MonoBehaviour
         }
     }
 
+    #region Debug
+
+#if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(attackPoint.position, castRadius);
+        if(attackPoint != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(attackPoint.position, castRadius);
+        }
     }
+#endif
+    #endregion
 }
