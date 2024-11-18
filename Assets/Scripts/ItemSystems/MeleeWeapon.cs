@@ -79,7 +79,7 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
         if (Physics.SphereCast(sphereCastOrigin.position, sphereCastRadius, direction, out RaycastHit hitInfo, sphereCastDistance, damagingLayers))
         {
             if (hitInfo.transform.TryGetComponent<EnemyComponent>(out var enemyComponent))
-                HitVictem(enemyComponent, velMag);
+                HitVictem(enemyComponent);
         }
     }
     #endregion
@@ -123,8 +123,8 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
         Destroy(gameObject);
 
         // Play SFX
-        if (impactSound != null)
-            audioSource.PlayOneShot(impactSound);
+        if (breakSound != null)
+            audioSource.PlayOneShot(breakSound);
     }
     #endregion
 
@@ -157,17 +157,16 @@ public class MeleeWeapon : XRGrabInteractable, IWeapon
     /// <summary>
     /// Applies a weapons damage to a victem and degrades the weapon.
     /// </summary>
-    private void HitVictem(EnemyComponent victem, float vel)
+    public void HitVictem(EnemyComponent victem)
     {
-        int totalDmg = Mathf.FloorToInt(Mathf.Clamp(damage * vel, 0, Damage));// Multiply damage by velocity
+        int totalDmg = Mathf.FloorToInt(Mathf.Clamp(damage * velMag, 0, Damage));// Multiply damage by velocity
         int dur = totalDmg * 2;
 
         RemoveDurability(dur);
         victem.TakeDamage(totalDmg);
 
-        // Play SFX
-        if (impactSound != null)
-            audioSource.PlayOneShot(impactSound);
+        Debug.Log("WTF");
+        audioSource.PlayOneShot(impactSound);
     }
     #endregion
 }

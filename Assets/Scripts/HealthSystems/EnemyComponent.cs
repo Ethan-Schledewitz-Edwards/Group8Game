@@ -55,8 +55,8 @@ public class EnemyComponent : EntityBase
         if ((weaponLayer.value & (1 << other.gameObject.layer)) != 0)
         {
             // Get the Weapon component if needed, or just handle the hit directly
-            if (other.TryGetComponent<IWeapon>(out var weapon))
-                TakeDamage(weapon.Damage);
+            if (other.TryGetComponent<MeleeWeapon>(out var weapon))
+                weapon.HitVictem(this);
         }
     }
     #endregion
