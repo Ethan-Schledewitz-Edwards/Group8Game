@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         OnWaveFinish?.Invoke();
 
         waveNumber++;
-        waveSize += 1 * waveNumber;
+        waveSize += 2 * waveNumber;
         waveEnemyCap += 1;
         enemyPool = waveSize;
 

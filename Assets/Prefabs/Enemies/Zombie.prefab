@@ -810,7 +810,7 @@ MonoBehaviour:
   - {fileID: 1701267537297365333}
   - {fileID: 8149770074058881655}
   rotationSpeed: 5
-  moveSpeed: 5
+  moveSpeed: 10
   attackPoint: {fileID: 976309404092496523}
   damagingLayers:
     serializedVersion: 2

@@ -15,8 +15,8 @@ TagManager:
   - Enemy
   - Environment
   - Weapon
-  - NoSelfCollision
-  - 
+  - ActiveBody
+  - Limb
   - 
   - 
   - 
